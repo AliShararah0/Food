@@ -682,8 +682,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     })();
     
     function initNavbar() {
-        console.log('Initializing navbar...');
-        
         // Get elements
         const menuTrigger = document.querySelector('.menu-trigger');
         const desktopDropdown = document.querySelector('.desktop-dropdown');
@@ -693,26 +691,27 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
         const closeMobileMenuBtn = document.querySelector('.close-mobile-menu');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .mobile-nav-btn');
         
-        console.log('Elements found:', {
-            mobileMenuBtn: !!mobileMenuBtn,
-            mobileMenuOverlay: !!mobileMenuOverlay,
-            closeMobileMenuBtn: !!closeMobileMenuBtn
-        });
-        
         // ========== DESKTOP DROPDOWN ==========
         if (menuTrigger && desktopDropdown) {
+            // Toggle dropdown on menu click
             menuTrigger.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                
+                // Toggle active state
                 const isActive = menuTrigger.classList.contains('active');
+                
+                // Close all other dropdowns first
                 closeAllDropdowns();
                 
+                // Toggle current dropdown
                 if (!isActive) {
                     menuTrigger.classList.add('active');
                     desktopDropdown.classList.add('active');
                 }
             });
             
+            // Close dropdown when clicking on dropdown items
             dropdownItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -720,12 +719,15 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                 });
             });
             
+            // Close dropdown when clicking outside
             document.addEventListener('click', function(e) {
+                // Check if click is outside the dropdown and menu trigger
                 if (!desktopDropdown.contains(e.target) && !menuTrigger.contains(e.target)) {
                     closeAllDropdowns();
                 }
             });
             
+            // Close dropdown on escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeAllDropdowns();
@@ -742,29 +744,18 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
         }
         
         // ========== MOBILE MENU ==========
-        // Mobile menu toggle - FIXED VERSION
+        // Mobile menu toggle
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('Mobile menu button clicked');
-                
-                const isActive = mobileMenuBtn.classList.contains('active');
-                
-                if (isActive) {
-                    closeMobileMenu();
-                } else {
-                    openMobileMenu();
-                }
+                e.stopPropagation();
+                toggleMobileMenu();
             });
-        } else {
-            console.error('Mobile menu button not found!');
         }
         
         // Close mobile menu when clicking X
         if (closeMobileMenuBtn) {
             closeMobileMenuBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('Close button clicked');
+                e.stopPropagation();
                 closeMobileMenu();
             });
         }
@@ -776,33 +767,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
             });
         });
         
-        // Close mobile menu functions
-        function openMobileMenu() {
-            console.log('Opening mobile menu');
-            mobileMenuBtn.classList.add('active');
-            mobileMenuOverlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('no-scroll');
-            
-            // Small delay to ensure display is set before adding active class
-            setTimeout(() => {
-                mobileMenuOverlay.classList.add('active');
-            }, 10);
-        }
-        
-        function closeMobileMenu() {
-            console.log('Closing mobile menu');
-            mobileMenuBtn.classList.remove('active');
-            mobileMenuOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.body.classList.remove('no-scroll');
-            
-            // Hide after transition
-            setTimeout(() => {
-                if (!mobileMenuBtn.classList.contains('active')) {
-                    mobileMenuOverlay.style.display = 'none';
+        // Close mobile menu when clicking outside
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', function(e) {
+                if(e.target === this) {
+                    closeMobileMenu();
                 }
-            }, 300);
+            });
         }
         
         // Close mobile menu on escape key
@@ -819,6 +790,58 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                 closeMobileMenu();
             }
         });
+        
+        // Add touch event for better mobile support
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+        }
+        
+        if (closeMobileMenuBtn) {
+            closeMobileMenuBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                closeMobileMenu();
+            }, { passive: false });
+        }
+    }
+    
+    function toggleMobileMenu() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        
+        if (!mobileMenuBtn || !mobileMenuOverlay) return;
+        
+        mobileMenuBtn.classList.toggle('active');
+        
+        if(mobileMenuBtn.classList.contains('active')) {
+            // Open menu
+            mobileMenuOverlay.style.display = 'flex';
+            setTimeout(() => {
+                mobileMenuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-scroll');
+            }, 10);
+        } else {
+            // Close menu
+            closeMobileMenu();
+        }
+    }
+    
+    function closeMobileMenu() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        
+        if (!mobileMenuBtn || !mobileMenuOverlay) return;
+        
+        mobileMenuBtn.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        
+        setTimeout(() => {
+            mobileMenuOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.body.classList.remove('no-scroll');
+        }, 300);
     }
 </script>
 
@@ -1520,6 +1543,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 </script>
 	</body>
 </html>
+
 
 
 
