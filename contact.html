@@ -833,10 +833,6 @@
                             <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
                         </div>
                         
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Your email address">
-                        </div>
                         
                         <div class="form-group">
                             <label for="subject">Subject *</label>
@@ -845,7 +841,6 @@
                                 <option value="General Inquiry">General Inquiry</option>
                                 <option value="Order Question">Order Question</option>
                                 <option value="Reservation">Reservation</option>
-                                <option value="Catering/Event">Catering/Event</option>
                                 <option value="Feedback">Feedback</option>
                                 <option value="Other">Other</option>
                             </select>
@@ -1049,7 +1044,7 @@
             submitBtn.disabled = true;
             
             // Create WhatsApp message
-            const whatsappMessage = `*New Message from Dr. Smashed Website*
+            const whatsappMessage = `*Welcome to Dr. Smashed*
             
 *Name:* ${name}
 *Phone:* ${phone}
@@ -1059,7 +1054,7 @@ ${email ? `*Email:* ${email}\n` : ''}
 *Message:*
 ${message}
             
-*Sent via:* Contact Form on Website`;
+*Sent via:* Whatsapp`;
             
             // Encode message for URL
             const encodedMessage = encodeURIComponent(whatsappMessage);
