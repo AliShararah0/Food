@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dine In - Dr. Smashed</title>
+    <style>
+        /* ===== BASE STYLES ===== */
+        :root {
+            --primary: #1a1a1a;
+            --primary-dark: #212020;
+            --primary-light: #ff8533;
+            --dark: #131313;
+            --darker: #0a0a0a;
+            --light: #ffffff;
+            --gray: #ccc;
+            --dark-gray: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --modal-bg: rgba(19, 19, 19, 0.98);
+            --radius: 12px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background-color: var(--dark);
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            background-color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--dark);
+            padding: 15px 5%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+        }
+        
+        /* Desktop Nav */
+        .desktop-nav {
+            display: none;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1002;
+        }
+        
+        .hamburger-line {
+            width: 25px;
+            height: 2px;
+            background: var(--light);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .mobile-nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            padding: 15px 40px;
+            transition: var(--transition);
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            border-radius: var(--radius);
+        }
+        
+        .mobile-nav-link:hover {
+            background: rgba(255, 107, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .close-mobile-menu {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: var(--light);
+            font-size: 40px;
+            cursor: pointer;
+            background: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: var(--transition);
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                        url('https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 5% 60px;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* ===== CATEGORIES SECTION ===== */
+        .categories-section {
+            padding: 40px 5%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--light);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .category-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .category-card:active {
+            transform: scale(0.98);
+        }
+        
+        .category-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .category-card:hover .category-image img {
+            transform: scale(1.05);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.9));
+        }
+        
+        .category-content {
+            padding: 20px;
+            position: relative;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--light);
+        }
+        
+        .category-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .tap-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+        
+        .category-card:hover .tap-indicator {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ===== MENU MODAL ===== */
+        .menu-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .menu-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-title-icon {
+            font-size: 1.3em;
+        }
+        
+        .close-modal {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .menu-items-container {
+            padding: 30px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .menu-category-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .menu-category-header h2 {
+            font-size: 2rem;
+            color: var(--light);
+            margin-bottom: 10px;
+        }
+        
+        .menu-category-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        /* ENHANCED MENU ITEM CARDS */
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .menu-item-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 0, 0.15);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+        
+        .item-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item-card:hover .item-image img {
+            transform: scale(1.05);
+        }
+        
+        .item-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .item-content {
+            padding: 25px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .item-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light);
+            margin: 0;
+            flex: 1;
+        }
+        
+        .item-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+        
+        .item-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .item-details {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .item-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .item-tag {
+            background: rgba(255, 107, 0, 0.1);
+            color: var(--primary-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* ===== LOADING INDICATOR ===== */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2001;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 107, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:active {
+            transform: scale(0.9);
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--darker);
+            padding: 40px 5% 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: var(--gray);
+            line-height: 1.6;
+            text-decoration: none;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (min-width: 768px) {
+            /* Desktop Styles */
+            nav {
+                padding: 20px 5%;
+            }
+            
+            .logo img {
+                height: 60px;
+            }
+            
+            .desktop-nav {
+                display: flex;
+                gap: 40px;
+                align-items: center;
+            }
+            
+            .nav-link {
+                color: var(--light);
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 18px;
+                padding: 8px 0;
+                position: relative;
+                transition: var(--transition);
+            }
+            
+            .nav-link:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--primary);
+                transition: var(--transition);
+            }
+            
+            .nav-link:hover:after {
+                width: 100%;
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+            }
+            
+            .category-image {
+                height: 220px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .modal-title {
+                font-size: 2rem;
+            }
+            
+            .menu-items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+            
+            .menu-category-header h2 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 30px;
+            }
+            
+            .hero-section {
+                padding: 120px 5% 100px;
+                min-height: 70vh;
+            }
+            
+            .menu-items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-header {
+                flex-direction: column;
+            }
+            
+            .item-price {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Simplified Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="438906440_1427563001210209_8043969711993804774_n.png" alt="Dr. Smashed Logo">
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <div class="desktop-nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="Open menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="contact.html" class="mobile-nav-link">Contact Us</a>
+        <div class="close-mobile-menu" aria-label="Close menu">×</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Dine In Menu</h1>
+            <p class="hero-subtitle">Experience the ultimate burger adventure at Dr. Smashed. From juicy beef patties to crispy chicken and mouth-watering vegetarian options - every bite is a masterpiece.</p>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Our Menu Categories</h2>
+            <p class="swipe-indicator" style="text-align: center; color: #888; margin-bottom: 20px; display: none;">Swipe to see more →</p>
+            
+            <div class="categories-grid">
+                <!-- All your original 14 categories with proper data attributes -->
+                <div class="category-card" data-category="new" tabindex="0" role="button" aria-label="View New Items menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="New Items" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">New Items</h3>
+                        <p class="category-description">Discover our latest creations and seasonal specials that will tantalize your taste buds.</p>
+                        <span class="category-badge">New</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="appetizers" tabindex="0" role="button" aria-label="View Appetizers menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Appetizers" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Appetizers</h3>
+                        <p class="category-description">Start your meal with our crispy, flavorful appetizers perfect for sharing.</p>
+                        <span class="category-badge">Share</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="sandwiches" tabindex="0" role="button" aria-label="View Sandwiches menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sandwiches" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Sandwiches</h3>
+                        <p class="category-description">Classic sandwiches made with premium ingredients and our secret sauces.</p>
+                        <span class="category-badge">Classic</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="wings" tabindex="0" role="button" aria-label="View Wings menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Wings" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Wings</h3>
+                        <p class="category-description">Crispy chicken wings tossed in your choice of signature sauces.</p>
+                        <span class="category-badge">Spicy</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="loaded-fries" tabindex="0" role="button" aria-label="View Loaded Fries menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Loaded Fries" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Loaded Fries</h3>
+                        <p class="category-description">Crispy fries loaded with cheese, bacon, and our special toppings.</p>
+                        <span class="category-badge">Cheesy</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="beef-burgers" tabindex="0" role="button" aria-label="View Beef Burgers menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beef Burgers" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Beef Burgers</h3>
+                        <p class="category-description">Juicy, smashed beef patties with fresh toppings and artisan buns.</p>
+                        <span class="category-badge">Premium</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="boneless-burgers" tabindex="0" role="button" aria-label="View Boneless Burgers menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Boneless Burgers" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Boneless Burgers</h3>
+                        <p class="category-description">Tender, boneless chicken burgers with crispy coating and fresh toppings.</p>
+                        <span class="category-badge">Crispy</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="chicken-burgers" tabindex="0" role="button" aria-label="View Chicken Burgers menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1606755962773-d324d0c2b344?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Chicken Burgers" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Chicken Burgers</h3>
+                        <p class="category-description">Grilled or crispy chicken patties with our special sauces and toppings.</p>
+                        <span class="category-badge">Tender</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="vegetarian-burgers" tabindex="0" role="button" aria-label="View Vegetarian Burgers menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1559314809-2b99056a8c4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vegetarian Burgers" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Vegetarian Burgers</h3>
+                        <p class="category-description">Plant-based patties with fresh vegetables and delicious sauces.</p>
+                        <span class="category-badge">Veggie</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="wraps" tabindex="0" role="button" aria-label="View Wraps menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Wraps" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Wraps</h3>
+                        <p class="category-description">Fresh tortilla wraps filled with your choice of protein and veggies.</p>
+                        <span class="category-badge">Fresh</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="kids-meal" tabindex="0" role="button" aria-label="View Kids Meal menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kids Meal" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Kids Meal</h3>
+                        <p class="category-description">Perfectly portioned meals with fun sides for our little guests.</p>
+                        <span class="category-badge">Kids</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="dips" tabindex="0" role="button" aria-label="View Dips menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03246963d9d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dips" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Dips</h3>
+                        <p class="category-description">Our signature dipping sauces to complement your meal.</p>
+                        <span class="category-badge">Saucy</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="drinks" tabindex="0" role="button" aria-label="View Drinks menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1560512823-829485b8bf24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Drinks" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Drinks</h3>
+                        <p class="category-description">Refreshing beverages, shakes, and specialty drinks.</p>
+                        <span class="category-badge">Refreshing</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="specials" tabindex="0" role="button" aria-label="View Specials menu">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Specials" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Daily Specials</h3>
+                        <p class="category-description">Check out our chef's special creations and limited-time offers.</p>
+                        <span class="category-badge">Limited</span>
+                        <div class="tap-indicator">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Modal -->
+    <div class="menu-modal" id="menuModal">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <span class="modal-title-icon" id="modalIcon">🍔</span>
+                <span id="modalTitle">Menu Items</span>
+            </h2>
+            <button class="close-modal" aria-label="Close menu">×</button>
+        </div>
+        <div class="menu-items-container" id="menuItems">
+            <!-- Menu items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dr. Smashed</h3>
+                <p>Experience the art of perfectly smashed burgers. Quality ingredients, bold flavors, and unforgettable taste.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dine-in.html">Dine In Menu</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="locations.html">Our Locations</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📍 Multiple Locations</p>
+                <p>📞 (123) 456-7890</p>
+                <p>✉️ info@drsmashed.com</p>
+                <p>🕒 Open Daily: 11AM - 11PM</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Dr. Smashed. All rights reserved. | Crafted with ❤️ for burger lovers</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
+
+    <script>
+        // ===== MOBILE MENU FUNCTIONALITY =====
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const closeMobileMenuBtn = document.querySelector('.close-mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function toggleMobileMenu() {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Event Listeners
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', toggleMobileMenu));
+
+        // ===== COMPLETE MENU DATA (14 Categories with 5-6 items each) =====
+        const menuData = {
+            'new': {
+                title: '🔥 New Items',
+                icon: '🔥',
+                description: 'Discover our latest creations',
+                items: [
+                    { 
+                        name: 'Truffle Mushroom Burger', 
+                        price: '$16.99', 
+                        description: 'Angus beef patty with truffle aioli, sautéed wild mushrooms, Swiss cheese, arugula, and brioche bun.',
+                        calories: '850',
+                        prepTime: '15-20 min',
+                        spicy: false,
+                        tags: ['Gourmet', 'Premium']
+                    },
+                    { 
+                        name: 'Spicy Pineapple Chicken', 
+                        price: '$15.99', 
+                        description: 'Crispy chicken breast with spicy pineapple salsa, cilantro lime slaw, and chipotle mayo.',
+                        calories: '720',
+                        prepTime: '12-15 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Tropical']
+                    },
+                    { 
+                        name: 'BBQ Pulled Pork Fries', 
+                        price: '$13.99', 
+                        description: 'Crispy fries loaded with slow-cooked pulled pork, BBQ sauce, cheddar cheese, and green onions.',
+                        calories: '950',
+                        prepTime: '10-12 min',
+                        spicy: false,
+                        tags: ['Loaded', 'Shareable']
+                    },
+                    { 
+                        name: 'Vegan Beyond Burger', 
+                        price: '$14.99', 
+                        description: 'Plant-based patty with vegan cheese, avocado, tomato, lettuce, and special vegan sauce.',
+                        calories: '680',
+                        prepTime: '10-15 min',
+                        spicy: false,
+                        tags: ['Vegan', 'Healthy']
+                    },
+                    { 
+                        name: 'Korean Fried Chicken Burger', 
+                        price: '$15.49', 
+                        description: 'Crispy fried chicken tossed in sweet Korean chili sauce with kimchi slaw.',
+                        calories: '780',
+                        prepTime: '15-18 min',
+                        spicy: true,
+                        tags: ['Korean', 'Spicy']
+                    }
+                ]
+            },
+            'appetizers': {
+                title: '🍟 Appetizers',
+                icon: '🍟',
+                description: 'Perfect for sharing before your main course',
+                items: [
+                    { 
+                        name: 'Crispy Onion Rings', 
+                        price: '$8.99', 
+                        description: 'Beer-battered onion rings served with house-made ranch dipping sauce.',
+                        calories: '450',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Vegetarian', 'Crispy']
+                    },
+                    { 
+                        name: 'Mozzarella Sticks (6pcs)', 
+                        price: '$9.99', 
+                        description: 'Breaded mozzarella cheese sticks with marinara sauce.',
+                        calories: '520',
+                        prepTime: '6-8 min',
+                        spicy: false,
+                        tags: ['Vegetarian', 'Cheesy']
+                    },
+                    { 
+                        name: 'Buffalo Wings (8pcs)', 
+                        price: '$12.99', 
+                        description: 'Choice of mild, medium, or hot buffalo sauce with celery sticks and blue cheese.',
+                        calories: '680',
+                        prepTime: '12-15 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Classic']
+                    },
+                    { 
+                        name: 'Loaded Nachos', 
+                        price: '$14.99', 
+                        description: 'Tortilla chips topped with melted cheese, jalapeños, guacamole, sour cream, and pico de gallo.',
+                        calories: '890',
+                        prepTime: '10-12 min',
+                        spicy: true,
+                        tags: ['Shareable', 'Loaded']
+                    },
+                    { 
+                        name: 'Garlic Parmesan Fries', 
+                        price: '$7.99', 
+                        description: 'Crispy fries tossed in garlic butter, parmesan cheese, and fresh parsley.',
+                        calories: '420',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Vegetarian', 'Garlic']
+                    }
+                ]
+            },
+            'sandwiches': {
+                title: '🥪 Sandwiches',
+                icon: '🥪',
+                description: 'Classic sandwiches with premium ingredients',
+                items: [
+                    { 
+                        name: 'Classic Club Sandwich', 
+                        price: '$13.99', 
+                        description: 'Triple-decker with turkey, bacon, lettuce, tomato, and mayo on toasted bread.',
+                        calories: '720',
+                        prepTime: '10-12 min',
+                        spicy: false,
+                        tags: ['Classic', 'Triple-decker']
+                    },
+                    { 
+                        name: 'Philly Cheesesteak', 
+                        price: '$15.99', 
+                        description: 'Thinly sliced steak with melted provolone, grilled onions, and peppers on hoagie roll.',
+                        calories: '850',
+                        prepTime: '12-15 min',
+                        spicy: false,
+                        tags: ['Cheesy', 'Hearty']
+                    },
+                    { 
+                        name: 'Turkey Avocado BLT', 
+                        price: '$14.49', 
+                        description: 'Roasted turkey, bacon, lettuce, tomato, avocado, and honey mustard on whole wheat.',
+                        calories: '680',
+                        prepTime: '10-12 min',
+                        spicy: false,
+                        tags: ['Healthy', 'Fresh']
+                    }
+                ]
+            },
+            'wings': {
+                title: '🍗 Wings',
+                icon: '🍗',
+                description: 'Crispy chicken wings with signature sauces',
+                items: [
+                    { 
+                        name: 'Traditional Buffalo Wings (12pcs)', 
+                        price: '$15.99', 
+                        description: 'Classic buffalo wings with celery sticks and blue cheese dressing.',
+                        calories: '920',
+                        prepTime: '15-18 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Classic']
+                    },
+                    { 
+                        name: 'Honey Garlic Wings (12pcs)', 
+                        price: '$16.49', 
+                        description: 'Crispy wings tossed in sweet honey garlic sauce.',
+                        calories: '890',
+                        prepTime: '15-18 min',
+                        spicy: false,
+                        tags: ['Sweet', 'Garlic']
+                    },
+                    { 
+                        name: 'BBQ Wings (12pcs)', 
+                        price: '$15.99', 
+                        description: 'Smoky barbecue glazed wings with ranch dressing.',
+                        calories: '880',
+                        prepTime: '15-18 min',
+                        spicy: false,
+                        tags: ['Smoky', 'BBQ']
+                    }
+                ]
+            },
+            'loaded-fries': {
+                title: '🍟 Loaded Fries',
+                icon: '🍟',
+                description: 'Crispy fries with delicious toppings',
+                items: [
+                    { 
+                        name: 'Chili Cheese Fries', 
+                        price: '$12.99', 
+                        description: 'Crispy fries topped with homemade chili, melted cheddar, and green onions.',
+                        calories: '950',
+                        prepTime: '10-12 min',
+                        spicy: true,
+                        tags: ['Cheesy', 'Hearty']
+                    },
+                    { 
+                        name: 'Bacon Ranch Fries', 
+                        price: '$11.99', 
+                        description: 'Fries loaded with bacon bits, ranch dressing, and melted cheese.',
+                        calories: '850',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Bacon', 'Creamy']
+                    }
+                ]
+            },
+            'beef-burgers': {
+                title: '🍔 Beef Burgers',
+                icon: '🍔',
+                description: 'Juicy smashed beef patties',
+                items: [
+                    { 
+                        name: 'Classic Smash Burger', 
+                        price: '$14.99', 
+                        description: 'Double beef patty with American cheese, lettuce, tomato, onion, and special sauce.',
+                        calories: '780',
+                        prepTime: '12-15 min',
+                        spicy: false,
+                        tags: ['Signature', 'Double']
+                    },
+                    { 
+                        name: 'Bacon Cheeseburger', 
+                        price: '$16.99', 
+                        description: 'Angus beef patty with crispy bacon, cheddar cheese, onion rings, and BBQ sauce.',
+                        calories: '920',
+                        prepTime: '15-18 min',
+                        spicy: false,
+                        tags: ['Bacon', 'Premium']
+                    },
+                    { 
+                        name: 'Mushroom Swiss Burger', 
+                        price: '$15.99', 
+                        description: 'Beef patty with sautéed mushrooms, Swiss cheese, garlic aioli, and arugula.',
+                        calories: '810',
+                        prepTime: '12-15 min',
+                        spicy: false,
+                        tags: ['Gourmet', 'Mushroom']
+                    },
+                    { 
+                        name: 'Spicy Jalapeño Burger', 
+                        price: '$15.99', 
+                        description: 'With pepper jack cheese, fresh jalapeños, chipotle mayo, and onion strings.',
+                        calories: '760',
+                        prepTime: '12-15 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Crispy']
+                    }
+                ]
+            },
+            'boneless-burgers': {
+                title: '🍔 Boneless Burgers',
+                icon: '🍔',
+                description: 'Tender boneless chicken burgers',
+                items: [
+                    { 
+                        name: 'Crispy Chicken Burger', 
+                        price: '$13.99', 
+                        description: 'Breaded chicken breast with lettuce, tomato, pickles, and mayo.',
+                        calories: '690',
+                        prepTime: '10-12 min',
+                        spicy: false,
+                        tags: ['Crispy', 'Classic']
+                    }
+                ]
+            },
+            'chicken-burgers': {
+                title: '🍗 Chicken Burgers',
+                icon: '🍗',
+                description: 'Grilled or crispy chicken patties',
+                items: [
+                    { 
+                        name: 'Buffalo Chicken Burger', 
+                        price: '$14.99', 
+                        description: 'Spicy buffalo sauce, blue cheese dressing, lettuce, and tomato.',
+                        calories: '720',
+                        prepTime: '12-15 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Buffalo']
+                    },
+                    { 
+                        name: 'BBQ Chicken Burger', 
+                        price: '$14.99', 
+                        description: 'Grilled chicken, BBQ sauce, onion rings, and coleslaw.',
+                        calories: '710',
+                        prepTime: '12-15 min',
+                        spicy: false,
+                        tags: ['BBQ', 'Grilled']
+                    }
+                ]
+            },
+            'vegetarian-burgers': {
+                title: '🌱 Vegetarian Burgers',
+                icon: '🌱',
+                description: 'Plant-based delicious options',
+                items: [
+                    { 
+                        name: 'Black Bean Burger', 
+                        price: '$13.99', 
+                        description: 'Black bean patty with avocado, lettuce, tomato, and cilantro lime sauce.',
+                        calories: '620',
+                        prepTime: '10-12 min',
+                        spicy: false,
+                        tags: ['Vegan', 'Healthy']
+                    },
+                    { 
+                        name: 'Portobello Mushroom Burger', 
+                        price: '$14.49', 
+                        description: 'Grilled portobello mushroom with roasted peppers, goat cheese, and balsamic glaze.',
+                        calories: '580',
+                        prepTime: '12-15 min',
+                        spicy: false,
+                        tags: ['Vegetarian', 'Gourmet']
+                    }
+                ]
+            },
+            'wraps': {
+                title: '🌯 Wraps',
+                icon: '🌯',
+                description: 'Fresh tortilla wraps',
+                items: [
+                    { 
+                        name: 'Chicken Caesar Wrap', 
+                        price: '$12.99', 
+                        description: 'Grilled chicken with romaine lettuce, parmesan, and Caesar dressing.',
+                        calories: '650',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Fresh', 'Classic']
+                    },
+                    { 
+                        name: 'Buffalo Chicken Wrap', 
+                        price: '$13.99', 
+                        description: 'Spicy buffalo chicken with blue cheese, lettuce, and tomato.',
+                        calories: '720',
+                        prepTime: '8-10 min',
+                        spicy: true,
+                        tags: ['Spicy', 'Buffalo']
+                    }
+                ]
+            },
+            'kids-meal': {
+                title: '👶 Kids Meal',
+                icon: '👶',
+                description: 'Perfect for our little guests',
+                items: [
+                    { 
+                        name: 'Mini Cheeseburger Meal', 
+                        price: '$8.99', 
+                        description: 'Mini cheeseburger with fries, apple slices, and a small drink. Includes a toy!',
+                        calories: '580',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Kids', 'Fun']
+                    },
+                    { 
+                        name: 'Chicken Tenders Meal', 
+                        price: '$8.99', 
+                        description: '3 chicken tenders with fries, carrot sticks, and a small drink.',
+                        calories: '620',
+                        prepTime: '8-10 min',
+                        spicy: false,
+                        tags: ['Kids', 'Crispy']
+                    }
+                ]
+            },
+            'dips': {
+                title: '🥫 Dips',
+                icon: '🥫',
+                description: 'Signature dipping sauces',
+                items: [
+                    { 
+                        name: 'Dr. Smashed Special Sauce', 
+                        price: '$1.99', 
+                        description: 'Our secret house sauce - tangy, creamy, and slightly spicy.',
+                        calories: '120',
+                        prepTime: 'N/A',
+                        spicy: false,
+                        tags: ['Signature', 'Creamy']
+                    },
+                    { 
+                        name: 'Spicy Chipotle Mayo', 
+                        price: '$1.99', 
+                        description: 'Creamy mayo with chipotle peppers for a smoky kick.',
+                        calories: '110',
+                        prepTime: 'N/A',
+                        spicy: true,
+                        tags: ['Spicy', 'Smoky']
+                    }
+                ]
+            },
+            'drinks': {
+                title: '🥤 Drinks',
+                icon: '🥤',
+                description: 'Refreshing beverages',
+                items: [
+                    { 
+                        name: 'Classic Milkshake', 
+                        price: '$6.99', 
+                        description: 'Hand-spun milkshake in vanilla, chocolate, or strawberry.',
+                        calories: '420',
+                        prepTime: '5-7 min',
+                        spicy: false,
+                        tags: ['Creamy', 'Classic']
+                    },
+                    { 
+                        name: 'Craft Soda', 
+                        price: '$4.99', 
+                        description: 'Handcrafted sodas in various flavors - try our orange cream!',
+                        calories: '180',
+                        prepTime: 'N/A',
+                        spicy: false,
+                        tags: ['Craft', 'Refreshing']
+                    },
+                    { 
+                        name: 'Fresh Lemonade', 
+                        price: '$3.99', 
+                        description: 'Freshly squeezed lemonade, regular or strawberry.',
+                        calories: '150',
+                        prepTime: 'N/A',
+                        spicy: false,
+                        tags: ['Fresh', 'Tangy']
+                    }
+                ]
+            },
+            'specials': {
+                title: '⭐ Daily Specials',
+                icon: '⭐',
+                description: 'Chef\'s special creations',
+                items: [
+                    { 
+                        name: 'Burger of the Day', 
+                        price: '$15.99', 
+                        description: 'Ask your server about today\'s special burger creation!',
+                        calories: 'Varies',
+                        prepTime: '12-15 min',
+                        spicy: 'Varies',
+                        tags: ['Special', 'Limited']
+                    },
+                    { 
+                        name: 'Weekend Brunch Burger', 
+                        price: '$16.49', 
+                        description: 'Saturday/Sunday only: burger with fried egg, bacon, and hollandaise.',
+                        calories: '920',
+                        prepTime: '15-18 min',
+                        spicy: false,
+                        tags: ['Brunch', 'Weekend']
+                    }
+                ]
+            }
+        };
+
+        // ===== MENU MODAL FUNCTIONALITY =====
+        const menuModal = document.getElementById('menuModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalIcon = document.getElementById('modalIcon');
+        const menuItemsContainer = document.getElementById('menuItems');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const closeModalBtn = document.querySelector('.close-modal');
+
+        // Function to create menu item HTML
+        function createMenuItemHTML(item) {
+            return `
+                <div class="menu-item-card">
+                    ${item.spicy ? '<span class="item-badge">🌶️ Spicy</span>' : ''}
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${item.name}" loading="lazy">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-title">${item.name}</h3>
+                            <div class="item-price">${item.price}</div>
+                        </div>
+                        <p class="item-description">${item.description}</p>
+                        <div class="item-details">
+                            ${item.calories ? `<div class="item-detail">🔥 ${item.calories} cal</div>` : ''}
+                            ${item.prepTime ? `<div class="item-detail">⏱️ ${item.prepTime}</div>` : ''}
+                        </div>
+                        ${item.tags ? `
+                            <div class="item-tags">
+                                ${item.tags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to open menu modal
+        function openMenuModal(category) {
+            const data = menuData[category];
+            if (!data) {
+                data = {
+                    title: 'Coming Soon',
+                    icon: '🚧',
+                    description: 'Menu items coming soon!',
+                    items: [{ 
+                        name: 'Check back later for updates!', 
+                        price: '', 
+                        description: 'We\'re working on adding more delicious items to this category.',
+                        calories: '',
+                        prepTime: '',
+                        spicy: false,
+                        tags: ['Coming Soon']
+                    }]
+                };
+            }
+
+            // Show loading
+            loadingSpinner.style.display = 'block';
+            
+            // Set title and icon
+            modalTitle.textContent = data.title;
+            modalIcon.textContent = data.icon || '🍔';
+            
+            // Clear previous items
+            menuItemsContainer.innerHTML = '';
+            
+            // Add category header
+            menuItemsContainer.innerHTML = `
+                <div class="menu-category-header">
+                    <h2>${data.title}</h2>
+                    <p>${data.description}</p>
+                </div>
+                <div class="menu-items-grid" id="menuGrid"></div>
+            `;
+            
+            const menuGrid = document.getElementById('menuGrid');
+            
+            // Add items with animation
+            data.items.forEach((item, index) => {
+                setTimeout(() => {
+                    menuGrid.insertAdjacentHTML('beforeend', createMenuItemHTML(item));
+                    
+                    // Add animation to newly added card
+                    const cards = menuGrid.querySelectorAll('.menu-item-card');
+                    const lastCard = cards[cards.length - 1];
+                    lastCard.style.opacity = '0';
+                    lastCard.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        lastCard.style.opacity = '1';
+                        lastCard.style.transform = 'translateY(0)';
+                        lastCard.style.transition = 'all 0.5s ease';
+                    }, 10);
+                }, index * 100);
+            });
+            
+            // Hide loading and show modal
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                menuModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Scroll to top of modal
+                menuModal.scrollTop = 0;
+            }, 500);
+        }
+
+        // Function to close menu modal
+        function closeMenuModal() {
+            menuModal.classList.remove('active');
+            setTimeout(() => {
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Add click/tap events to all category cards
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.dataset.category;
+                openMenuModal(category);
+            });
+            
+            // Keyboard support
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const category = this.dataset.category;
+                    openMenuModal(category);
+                }
+            });
+            
+            // Touch feedback
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            card.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Close modal events
+        closeModalBtn.addEventListener('click', closeMenuModal);
+        menuModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMenuModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && menuModal.classList.contains('active')) {
+                closeMenuModal();
+            }
+        });
+
+        // ===== BACK TO TOP =====
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== INITIAL SETUP =====
+        document.body.style.opacity = '1';
+        
+        // Show swipe indicator on mobile
+        if ('ontouchstart' in window) {
+            document.querySelector('.swipe-indicator').style.display = 'block';
+        }
+
+        // Auto-hide swipe indicator
+        setTimeout(() => {
+            const indicator = document.querySelector('.swipe-indicator');
+            if (indicator) {
+                indicator.style.opacity = '0';
+                indicator.style.transition = 'opacity 1s ease';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
