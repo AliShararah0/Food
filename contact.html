@@ -370,7 +370,7 @@
         }
         
         .submit-btn {
-            background: var(--primary);
+            background: #25D366;
             color: white;
             padding: 16px 30px;
             border: none;
@@ -380,12 +380,16 @@
             cursor: pointer;
             transition: var(--transition);
             margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .submit-btn:hover {
-            background: var(--primary-dark);
+            background: #1da851;
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
         }
         
         .submit-btn:active {
@@ -395,33 +399,6 @@
         .submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-        }
-        
-        /* Success Message */
-        .success-message {
-            background: rgba(37, 211, 102, 0.1);
-            border: 1px solid #25D366;
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            display: none;
-        }
-        
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .success-message p {
-            color: #25D366;
-            margin: 0;
-            font-weight: 600;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         /* ===== LOCATIONS ===== */
@@ -743,7 +720,7 @@
     <section class="hero-section">
         <div class="container">
             <h1 class="hero-title">Contact Dr. Smashed</h1>
-            <p class="hero-subtitle">We'd love to hear from you! Whether you have questions about our menu, want to book an event, or just want to say hello, we're here for you.</p>
+            <p class="hero-subtitle">We'd love to hear from you! Message us directly on WhatsApp for the quickest response.</p>
         </div>
     </section>
 
@@ -767,6 +744,16 @@
                         </div>
                         
                         <div class="contact-card">
+                            <span class="contact-icon" style="color: #25D366;">💬</span>
+                            <h3>WhatsApp Direct</h3>
+                            <p>Message us directly on WhatsApp for the quickest response. Click to chat now!</p>
+                            <a href="https://wa.me/96176634625" target="_blank" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                                Chat on WhatsApp
+                            </a>
+                        </div>
+                        
+                        <div class="contact-card">
                             <span class="contact-icon">📞</span>
                             <h3>Call Us</h3>
                             <p>Speak directly with our team during business hours.</p>
@@ -775,52 +762,13 @@
                                 +961 76 634 625
                             </a>
                         </div>
-                        
-                        <div class="contact-card">
-                            <span class="contact-icon">✉️</span>
-                            <h3>Email Us</h3>
-                            <p>Send us an email and we'll get back to you within 24 hours.</p>
-                            <a href="mailto:info@drsmashed.com" class="whatsapp-btn" style="background: var(--primary);">
-                                <i class="fas fa-envelope"></i>
-                                info@drsmashed.com
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- WhatsApp Contact -->
-                    <div class="contact-card" style="margin-top: 30px;">
-                        <span class="contact-icon" style="color: #25D366;">💬</span>
-                        <h3>WhatsApp Direct</h3>
-                        <p>Message us directly on WhatsApp for the quickest response. Our team is available to answer your questions, take orders, or help with reservations.</p>
-                        <p><strong>Response Time:</strong> Usually within minutes during business hours</p>
-                        
-                        <!-- WhatsApp Buttons -->
-                        <div style="display: grid; gap: 15px; margin-top: 20px;">
-                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20have%20a%20question%20about%20your%20menu." target="_blank" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp whatsapp-icon"></i>
-                                General Inquiry
-                            </a>
-                            
-                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20would%20like%20to%20place%20an%20order." target="_blank" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp whatsapp-icon"></i>
-                                Place an Order
-                            </a>
-                            
-                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20want%20to%20make%20a%20reservation." target="_blank" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp whatsapp-icon"></i>
-                                Make a Reservation
-                            </a>
-                        </div>
                     </div>
                 </div>
                 
                 <!-- Contact Form -->
                 <div class="contact-form-container">
-                    <h3 class="form-title">Send Us a Message</h3>
-                    
-                    <div class="success-message" id="successMessage">
-                        <p><i class="fas fa-check-circle"></i> Your message has been prepared! Click the WhatsApp button below to send it.</p>
-                    </div>
+                    <h3 class="form-title">Send Message via WhatsApp</h3>
+                    <p style="color: var(--gray); text-align: center; margin-bottom: 25px; font-size: 0.95rem;">Fill the form below and send directly to WhatsApp</p>
                     
                     <form class="contact-form" id="contactForm">
                         <div class="form-group">
@@ -833,7 +781,6 @@
                             <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
                         </div>
                         
-                        
                         <div class="form-group">
                             <label for="subject">Subject *</label>
                             <select id="subject" name="subject" required>
@@ -841,6 +788,7 @@
                                 <option value="General Inquiry">General Inquiry</option>
                                 <option value="Order Question">Order Question</option>
                                 <option value="Reservation">Reservation</option>
+                                <option value="Catering/Event">Catering/Event</option>
                                 <option value="Feedback">Feedback</option>
                                 <option value="Other">Other</option>
                             </select>
@@ -852,23 +800,13 @@
                         </div>
                         
                         <button type="submit" class="submit-btn" id="submitBtn">
-                            <span id="btnText">Prepare WhatsApp Message</span>
+                            <i class="fab fa-whatsapp"></i>
+                            <span id="btnText">Send via WhatsApp</span>
                             <span id="btnLoading" style="display: none;">
-                                <i class="fas fa-spinner fa-spin"></i> Processing...
+                                <i class="fas fa-spinner fa-spin"></i> Opening WhatsApp...
                             </span>
                         </button>
                     </form>
-                    
-                    <!-- Generated WhatsApp Link -->
-                    <div id="whatsappLinkContainer" style="display: none; margin-top: 20px; text-align: center;">
-                        <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">
-                            <i class="fab fa-whatsapp whatsapp-icon"></i>
-                            Send via WhatsApp Now
-                        </a>
-                        <p style="color: var(--gray); font-size: 0.9rem; margin-top: 10px;">
-                            Click the button above to send your message directly via WhatsApp
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -957,8 +895,6 @@
             </div>
         </div>
     </section>
-    
-   
 
     <!-- Footer -->
     <footer class="footer">
@@ -988,7 +924,7 @@
                 <h3>Contact Info</h3>
                 <p><i class="fas fa-map-marker-alt"></i> Multiple Locations</p>
                 <p><i class="fas fa-phone-alt"></i> +961 76 634 625</p>
-                <p><i class="fas fa-envelope"></i> info@drsmashed.com</p>
+                <p><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp: +961 76 634 625</p>
                 <p><i class="fas fa-clock"></i> Open Daily: 11AM - 11PM</p>
             </div>
         </div>
@@ -1019,14 +955,11 @@
         closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
         mobileNavLinks.forEach(link => link.addEventListener('click', toggleMobileMenu));
 
-        // ===== CONTACT FORM TO WHATSAPP =====
+        // ===== DIRECT WHATSAPP FORM SUBMISSION =====
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const btnLoading = document.getElementById('btnLoading');
-        const successMessage = document.getElementById('successMessage');
-        const whatsappLinkContainer = document.getElementById('whatsappLinkContainer');
-        const whatsappLink = document.getElementById('whatsappLink');
 
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1034,7 +967,6 @@
             // Get form values
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
             
@@ -1044,17 +976,14 @@
             submitBtn.disabled = true;
             
             // Create WhatsApp message
-            const whatsappMessage = `*Welcome to Dr. Smashed*
+            const whatsappMessage = `*New Message from Dr. Smashed Website*
             
 *Name:* ${name}
 *Phone:* ${phone}
-${email ? `*Email:* ${email}\n` : ''}
 *Subject:* ${subject}
             
 *Message:*
-${message}
-            
-*Sent via:* Whatsapp`;
+${message}`;
             
             // Encode message for URL
             const encodedMessage = encodeURIComponent(whatsappMessage);
@@ -1062,23 +991,18 @@ ${message}
             // Create WhatsApp URL
             const whatsappUrl = `https://wa.me/96176634625?text=${encodedMessage}`;
             
-            // Simulate processing time
+            // Open WhatsApp directly after a short delay
             setTimeout(() => {
-                // Set WhatsApp link
-                whatsappLink.href = whatsappUrl;
+                window.open(whatsappUrl, '_blank');
                 
-                // Show success message and WhatsApp link
-                successMessage.classList.add('show');
-                whatsappLinkContainer.style.display = 'block';
-                
-                // Reset button
-                btnText.style.display = 'inline';
-                btnLoading.style.display = 'none';
-                submitBtn.disabled = false;
-                
-                // Scroll to WhatsApp link
-                whatsappLinkContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1000);
+                // Reset form after 1 second
+                setTimeout(() => {
+                    contactForm.reset();
+                    btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                    submitBtn.disabled = false;
+                }, 1000);
+            }, 500);
         });
 
         // ===== BACK TO TOP =====
