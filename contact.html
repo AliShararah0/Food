@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contact Us - Dr. Smashed</title>
+    <style>
+        /* ===== BASE STYLES ===== */
+        :root {
+            --primary: #ff6b00;
+            --primary-dark: #e55a00;
+            --primary-light: #ff8533;
+            --dark: #131313;
+            --darker: #0a0a0a;
+            --light: #ffffff;
+            --gray: #ccc;
+            --dark-gray: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --modal-bg: rgba(19, 19, 19, 0.98);
+            --radius: 12px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background-color: var(--dark);
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            background-color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--dark);
+            padding: 15px 5%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+        }
+        
+        /* Desktop Nav */
+        .desktop-nav {
+            display: none;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1002;
+        }
+        
+        .hamburger-line {
+            width: 25px;
+            height: 2px;
+            background: var(--light);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .mobile-nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            padding: 15px 40px;
+            transition: var(--transition);
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            border-radius: var(--radius);
+        }
+        
+        .mobile-nav-link:hover {
+            background: rgba(255, 107, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .close-mobile-menu {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: var(--light);
+            font-size: 40px;
+            cursor: pointer;
+            background: var(--dark);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                        url('https://images.unsplash.com/photo-1577303935007-0d306ee638cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 5% 60px;
+            text-align: center;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 70px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* ===== CONTACT CONTENT ===== */
+        .contact-content {
+            padding: 60px 5%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--light);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        
+        /* Contact Methods */
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 0, 0.15);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+        
+        .contact-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .contact-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .contact-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn:active {
+            transform: translateY(0);
+        }
+        
+        .whatsapp-icon {
+            font-size: 1.5rem;
+        }
+        
+        /* Contact Form */
+        .contact-form-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--light);
+            text-align: center;
+        }
+        
+        .contact-form {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 15px;
+            background: var(--darker);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 16px 30px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid #25D366;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .success-message p {
+            color: #25D366;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== LOCATIONS ===== */
+        .locations-section {
+            padding: 60px 5%;
+            background: var(--darker);
+        }
+        
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .location-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 0, 0.15);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+        
+        .location-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .location-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .location-card:hover .location-image img {
+            transform: scale(1.05);
+        }
+        
+        .location-content {
+            padding: 25px;
+        }
+        
+        .location-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .location-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--gray);
+        }
+        
+        .location-detail i {
+            color: var(--primary);
+            width: 20px;
+        }
+        
+        /* ===== HOURS SECTION ===== */
+        .hours-section {
+            padding: 60px 5%;
+        }
+        
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .hours-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .hours-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .hours-list {
+            list-style: none;
+        }
+        
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--gray);
+        }
+        
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .hours-list .day {
+            font-weight: 500;
+        }
+        
+        .hours-list .time {
+            color: var(--primary-light);
+        }
+        
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:active {
+            transform: scale(0.9);
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--darker);
+            padding: 40px 5% 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: var(--gray);
+            line-height: 1.6;
+            text-decoration: none;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (min-width: 768px) {
+            /* Desktop Styles */
+            nav {
+                padding: 20px 5%;
+            }
+            
+            .logo img {
+                height: 60px;
+            }
+            
+            .desktop-nav {
+                display: flex;
+                gap: 40px;
+                align-items: center;
+            }
+            
+            .nav-link {
+                color: var(--light);
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 18px;
+                padding: 8px 0;
+                position: relative;
+                transition: var(--transition);
+            }
+            
+            .nav-link:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--primary);
+                transition: var(--transition);
+            }
+            
+            .nav-link:hover:after {
+                width: 100%;
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 50px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-section {
+                padding: 120px 5% 100px;
+                min-height: 60vh;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-form-container {
+                padding: 25px;
+            }
+            
+            .contact-card {
+                padding: 25px 20px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Simplified Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="438906440_1427563001210209_8043969711993804774_n.png" alt="Dr. Smashed Logo">
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <div class="desktop-nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="dine-in.html" class="nav-link">Dine In Menu</a>
+            <a href="contact.html" class="nav-link active">Contact Us</a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="Open menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="dine-in.html" class="mobile-nav-link">Dine In Menu</a>
+        <a href="contact.html" class="mobile-nav-link active">Contact Us</a>
+        <div class="close-mobile-menu" aria-label="Close menu">×</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Contact Dr. Smashed</h1>
+            <p class="hero-subtitle">We'd love to hear from you! Whether you have questions about our menu, want to book an event, or just want to say hello, we're here for you.</p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="contact-content">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            
+            <div class="contact-grid">
+                <!-- Contact Methods -->
+                <div class="contact-methods-section">
+                    <div class="contact-methods">
+                        <div class="contact-card">
+                            <span class="contact-icon">📍</span>
+                            <h3>Our Locations</h3>
+                            <p>Visit us at one of our convenient locations. We have multiple spots across the city.</p>
+                            <a href="#locations" class="whatsapp-btn" style="background: var(--primary);">
+                                <i class="fas fa-map-marker-alt"></i>
+                                View Locations
+                            </a>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <span class="contact-icon">📞</span>
+                            <h3>Call Us</h3>
+                            <p>Speak directly with our team during business hours.</p>
+                            <a href="tel:+96176634625" class="whatsapp-btn" style="background: var(--primary);">
+                                <i class="fas fa-phone-alt"></i>
+                                +961 76 634 625
+                            </a>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <span class="contact-icon">✉️</span>
+                            <h3>Email Us</h3>
+                            <p>Send us an email and we'll get back to you within 24 hours.</p>
+                            <a href="mailto:info@drsmashed.com" class="whatsapp-btn" style="background: var(--primary);">
+                                <i class="fas fa-envelope"></i>
+                                info@drsmashed.com
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- WhatsApp Contact -->
+                    <div class="contact-card" style="margin-top: 30px;">
+                        <span class="contact-icon" style="color: #25D366;">💬</span>
+                        <h3>WhatsApp Direct</h3>
+                        <p>Message us directly on WhatsApp for the quickest response. Our team is available to answer your questions, take orders, or help with reservations.</p>
+                        <p><strong>Response Time:</strong> Usually within minutes during business hours</p>
+                        
+                        <!-- WhatsApp Buttons -->
+                        <div style="display: grid; gap: 15px; margin-top: 20px;">
+                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20have%20a%20question%20about%20your%20menu." target="_blank" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                                General Inquiry
+                            </a>
+                            
+                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20would%20like%20to%20place%20an%20order." target="_blank" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                                Place an Order
+                            </a>
+                            
+                            <a href="https://wa.me/96176634625?text=Hello%20Dr.%20Smashed!%20I%20want%20to%20make%20a%20reservation." target="_blank" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                                Make a Reservation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <h3 class="form-title">Send Us a Message</h3>
+                    
+                    <div class="success-message" id="successMessage">
+                        <p><i class="fas fa-check-circle"></i> Your message has been prepared! Click the WhatsApp button below to send it.</p>
+                    </div>
+                    
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Your name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Your email address">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Select a subject</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Order Question">Order Question</option>
+                                <option value="Reservation">Reservation</option>
+                                <option value="Catering/Event">Catering/Event</option>
+                                <option value="Feedback">Feedback</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required placeholder="Your message..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span id="btnText">Prepare WhatsApp Message</span>
+                            <span id="btnLoading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Processing...
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <!-- Generated WhatsApp Link -->
+                    <div id="whatsappLinkContainer" style="display: none; margin-top: 20px; text-align: center;">
+                        <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">
+                            <i class="fab fa-whatsapp whatsapp-icon"></i>
+                            Send via WhatsApp Now
+                        </a>
+                        <p style="color: var(--gray); font-size: 0.9rem; margin-top: 10px;">
+                            Click the button above to send your message directly via WhatsApp
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Locations Section -->
+    <section class="locations-section" id="locations">
+        <div class="container">
+            <h2 class="section-title">Our Locations</h2>
+            
+            <div class="locations-grid">
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Downtown Location" loading="lazy">
+                    </div>
+                    <div class="location-content">
+                        <h3>Downtown Flagship</h3>
+                        <div class="location-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Burger Street, Downtown, Beirut</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+961 76 634 625</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>Open Daily: 11AM - 11PM</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=123+Burger+Street+Downtown+Beirut" target="_blank" class="whatsapp-btn" style="background: var(--primary); margin-top: 20px; padding: 12px 20px; font-size: 0.9rem;">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="West Branch Location" loading="lazy">
+                    </div>
+                    <div class="location-content">
+                        <h3>West Branch</h3>
+                        <div class="location-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>456 Gourmet Avenue, West Beirut</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+961 76 634 625</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>Open Daily: 11AM - 11PM</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=456+Gourmet+Avenue+West+Beirut" target="_blank" class="whatsapp-btn" style="background: var(--primary); margin-top: 20px; padding: 12px 20px; font-size: 0.9rem;">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Northside Location" loading="lazy">
+                    </div>
+                    <div class="location-content">
+                        <h3>Northside Restaurant</h3>
+                        <div class="location-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>789 Food Court, North Beirut</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+961 76 634 625</span>
+                        </div>
+                        <div class="location-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>Open Daily: 11AM - 11PM</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=789+Food+Court+North+Beirut" target="_blank" class="whatsapp-btn" style="background: var(--primary); margin-top: 20px; padding: 12px 20px; font-size: 0.9rem;">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Hours Section -->
+    <section class="hours-section">
+        <div class="container">
+            <h2 class="section-title">Opening Hours</h2>
+            
+            <div class="hours-grid">
+                <div class="hours-card">
+                    <h3>Restaurant Hours</h3>
+                    <ul class="hours-list">
+                        <li><span class="day">Monday - Thursday</span> <span class="time">11:00 AM - 11:00 PM</span></li>
+                        <li><span class="day">Friday - Saturday</span> <span class="time">11:00 AM - 12:00 AM</span></li>
+                        <li><span class="day">Sunday</span> <span class="time">11:00 AM - 10:00 PM</span></li>
+                    </ul>
+                </div>
+                
+                <div class="hours-card">
+                    <h3>Kitchen Hours</h3>
+                    <ul class="hours-list">
+                        <li><span class="day">Last Order</span> <span class="time">10:30 PM</span></li>
+                        <li><span class="day">Friday - Saturday</span> <span class="time">11:30 PM</span></li>
+                        <li><span class="day">Happy Hour</span> <span class="time">3:00 PM - 6:00 PM</span></li>
+                    </ul>
+                </div>
+                
+                <div class="hours-card">
+                    <h3>Special Hours</h3>
+                    <ul class="hours-list">
+                        <li><span class="day">Holidays</span> <span class="time">12:00 PM - 9:00 PM</span></li>
+                        <li><span class="day">Delivery Cut-off</span> <span class="time">10:00 PM</span></li>
+                        <li><span class="day">Takeaway</span> <span class="time">Until Closing</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dr. Smashed</h3>
+                <p>Experience the art of perfectly smashed burgers. Quality ingredients, bold flavors, and unforgettable taste.</p>
+                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                    <a href="https://facebook.com" target="_blank" style="color: var(--primary); font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" style="color: var(--primary); font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank" style="color: var(--primary); font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dine-in.html">Dine In Menu</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="locations.html">Our Locations</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Multiple Locations</p>
+                <p><i class="fas fa-phone-alt"></i> +961 76 634 625</p>
+                <p><i class="fas fa-envelope"></i> info@drsmashed.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11AM - 11PM</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Dr. Smashed. All rights reserved. | Crafted with ❤️ for burger lovers</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
+
+    <script>
+        // ===== MOBILE MENU FUNCTIONALITY =====
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const closeMobileMenuBtn = document.querySelector('.close-mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function toggleMobileMenu() {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Event Listeners
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', toggleMobileMenu));
+
+        // ===== CONTACT FORM TO WHATSAPP =====
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoading = document.getElementById('btnLoading');
+        const successMessage = document.getElementById('successMessage');
+        const whatsappLinkContainer = document.getElementById('whatsappLinkContainer');
+        const whatsappLink = document.getElementById('whatsappLink');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            submitBtn.disabled = true;
+            
+            // Create WhatsApp message
+            const whatsappMessage = `*New Message from Dr. Smashed Website*
+            
+*Name:* ${name}
+*Phone:* ${phone}
+${email ? `*Email:* ${email}\n` : ''}
+*Subject:* ${subject}
+            
+*Message:*
+${message}
+            
+*Sent via:* Contact Form on Website`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            
+            // Create WhatsApp URL
+            const whatsappUrl = `https://wa.me/96176634625?text=${encodedMessage}`;
+            
+            // Simulate processing time
+            setTimeout(() => {
+                // Set WhatsApp link
+                whatsappLink.href = whatsappUrl;
+                
+                // Show success message and WhatsApp link
+                successMessage.classList.add('show');
+                whatsappLinkContainer.style.display = 'block';
+                
+                // Reset button
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Scroll to WhatsApp link
+                whatsappLinkContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1000);
+        });
+
+        // ===== BACK TO TOP =====
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== FORM VALIDATION =====
+        const phoneInput = document.getElementById('phone');
+        
+        phoneInput.addEventListener('input', function() {
+            // Remove any non-digit characters
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // ===== INITIAL SETUP =====
+        document.body.style.opacity = '1';
+        
+        // Add active class to current page in desktop nav
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+
+        // Auto-focus first input on load
+        window.addEventListener('load', function() {
+            document.getElementById('name').focus();
+        });
+    </script>
+</body>
+</html>
